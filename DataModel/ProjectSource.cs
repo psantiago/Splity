@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Splity.DataModel;
+using Newtonsoft.Json.Serialization;
 using Splity.Domain;
 
 namespace Splity.Data
@@ -29,6 +30,19 @@ namespace Splity.Data
             var response = await CurrentClientSingleton.Client.SendAsync(request);
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Project>(jsonString);
+        }
+
+        public static async Task AddProjectAsync(Project p)
+        {
+            var jsonString = JsonConvert.SerializeObject(p);
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/project");
+            await Client.SendAsync(request);
+        }
+
+        public static async Task DeleteProject(int id)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete, "api/project/" + id);
+            await Client.SendAsync(request);
         }
     }
 }
