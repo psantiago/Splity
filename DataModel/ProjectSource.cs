@@ -16,14 +16,15 @@ namespace Splity.Data
     {
         private static readonly HttpClient Client = new HttpClient();
 
+        private const string ServiceUrl = "https://thematrixrevolutions.azurewebsites.net/api/projects";
         static ProjectSource()
         {
-            Client.BaseAddress = new Uri("https://thematrixrevolutions.azurewebsites.net/");
+            Client.BaseAddress = new Uri("https://thematrixrevolutions.azurewebsites.net/api/projects");
         }
 
         public static async Task<IEnumerable<Project>> GetProjectsAsync()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/project");
+            var request = new HttpRequestMessage(HttpMethod.Get, "");
             HttpResponseMessage response = await Client.SendAsync(request);
             string jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Project[]>(jsonString);
@@ -31,7 +32,7 @@ namespace Splity.Data
 
         public static async Task<Project> GetProjectsAsync(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/project/"+id);
+            var request = new HttpRequestMessage(HttpMethod.Get, "/"+id);
             HttpResponseMessage response = await Client.SendAsync(request);
             string jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Project>(jsonString);
@@ -40,13 +41,18 @@ namespace Splity.Data
         public static async Task AddProjectAsync(Project p)
         {
             var jsonString = JsonConvert.SerializeObject(p);
-            var request = new HttpRequestMessage(HttpMethod.Post, "api/project");
-            await Client.SendAsync(request);
+            await Client.PostAsync(ServiceUrl, new StringContent(jsonString, Encoding.UTF8));
+        }
+        public static async Task UpdateProjectAsync(Project p)
+        {
+            var jsonString = JsonConvert.SerializeObject(p);
+            var s = new StringContent(jsonString, Encoding.UTF8);
+            await Client.PutAsync(String.Format("{0}/{1}", ServiceUrl, p.Id),s);
         }
 
         public static async Task DeleteProject(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Delete, "api/project/" + id);
+            var request = new HttpRequestMessage(HttpMethod.Delete, "/"+id);
             await Client.SendAsync(request);
         }
     }
