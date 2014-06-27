@@ -43,7 +43,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Back button and page title -->
-        <Grid x:Name="titlePanel">
+        <Grid x:Name="titlePanel" Margin="0,0,0,10" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
@@ -54,8 +54,25 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Text="{Binding Title}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,0,40"/>
+            <StackPanel x:Name="projectDetailTitlePanel" Grid.Column="1">
+                <TextBlock x:Name="projectTitle" Margin="0,-10,0,0" Text="{Binding Title}" Style="{StaticResource SubheaderTextBlockStyle}"/>
+                <TextBlock x:Name="projectDeadline" Margin="0,0,0,20" Style="{StaticResource SubtitleTextBlockStyle}">
+                        Deadline:
+                        <Run Text="{Binding Deadline}" />
+                </TextBlock>
+                <TextBlock x:Name="projectSubtitle" Margin="0,0,0,20" Style="{StaticResource SubtitleTextBlockStyle}">
+                        Description:
+                        <Run Text="{Binding Description}" />
+                </TextBlock>
+                <TextBlock x:Name="projectPriority" Margin="0,0,0,20" Style="{StaticResource SubtitleTextBlockStyle}">
+                        Priority:
+                        <Run Text="{Binding Priority}" />
+                </TextBlock>
+                <TextBlock x:Name="projectStatus" Margin="0,0,0,20" Style="{StaticResource SubtitleTextBlockStyle}">
+                        Status:
+                        <Run Text="{Binding Status}" />
+                </TextBlock>
+            </StackPanel>
         </Grid>
 
         <!-- Vertical scrolling item list -->
@@ -65,11 +82,11 @@
             AutomationProperties.Name="Items"
             TabIndex="1"
             Grid.Row="1"
-            Margin="-10,-10,0,0"
-            Padding="120,0,0,60"
+            Margin="10,0,0,-10"
+            Padding="0,0,0,60"
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
             IsSwipeEnabled="False"
-            SelectionChanged="ItemListView_SelectionChanged">
+            SelectionChanged="ItemListView_SelectionChanged" Grid.Column="1" HorizontalAlignment="Left" Width="413">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="6">
@@ -99,19 +116,18 @@
             x:Name="itemDetail"
             AutomationProperties.AutomationId="ItemDetailScrollViewer"
             Grid.Column="1"
-            Grid.RowSpan="2"
             Padding="60,0,66,0"
             DataContext="{Binding SelectedItem, ElementName=itemListView}"
             d:DataContext="{Binding Groups[0].Items[0], Source={d:DesignData Source=/DataModel/SampleData.json, Type=data:SampleDataSource}}"
             HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
             ScrollViewer.HorizontalScrollMode="Disabled" ScrollViewer.VerticalScrollMode="Enabled"
-            ScrollViewer.ZoomMode="Disabled">
+            ScrollViewer.ZoomMode="Disabled" Margin="453,0,-1,-140" Grid.Row="1">
 
             <Grid x:Name="itemDetailGrid" Margin="0,60,0,50">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="180"/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -138,14 +154,17 @@
                         <Run Text="{Binding Status}" />
                     </TextBlock>
                 </StackPanel>
-                <ListView x:Name="listView1"  Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0">
-                    <!--<ListView.ItemTemplate>
-                        
-                    </ListView.ItemTemplate>-->
-                    <x:String>Item 1</x:String>
-                    <x:String>Item 2</x:String>
+                <ListView x:Name="listView1" ItemsSource="{Binding Comments}"  Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" HorizontalAlignment="Center">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock > 
+                                <Run Text="{ Binding Body}" />
+                                -
+                                 <Run Text="{ Binding User.Name}" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
-                <!--<TextBlock Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" Text="{Binding Content}" Style="{StaticResource BodyTextBlockStyle}"/>-->
             </Grid>
         </ScrollViewer>
         <VisualStateManager.VisualStateGroups>

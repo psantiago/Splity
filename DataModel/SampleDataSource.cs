@@ -125,13 +125,6 @@ namespace Splity.Data
             }
         }
 
-        public static async Task<IEnumerable<SampleDataGroup>> GetGroupsAsync()
-        {
-            await _sampleDataSource.GetSampleDataAsync();
-
-            return _sampleDataSource.Groups;
-        }
-
         public static async Task<IEnumerable<Project>> GetProjectsAsync()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "api/projects");
@@ -142,16 +135,10 @@ namespace Splity.Data
 
         public static async Task<Project> GetProjectsAsync(int id)
         {
-            return await Task.Factory.StartNew(() => FakeData.GetSomeProjects().FirstOrDefault(i => i.Id == id));
-        }
-
-        public static async Task<SampleDataGroup> GetGroupAsync(string uniqueId)
-        {
-            await _sampleDataSource.GetSampleDataAsync();
-            // Simple linear search is acceptable for small data sets
-            var matches = _sampleDataSource.Groups.Where((group) => group.UniqueId.Equals(uniqueId));
-            if (matches.Count() == 1) return matches.First();
-            return null;
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/projects/" + id);
+            var response = await _client.SendAsync(request);
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Project>(jsonString);
         }
 
         public static async Task<SampleDataItem> GetItemAsync(string uniqueId)
