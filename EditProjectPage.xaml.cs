@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Splity.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,28 +13,20 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-using Splity.Common;
+// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using Splity.Data;
 using Splity.Domain;
 
 namespace Splity
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class LoginPage : Page
+    public sealed partial class EditProjectPage : Page
     {
 
         private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
-
-        public LoginPage()
-        {
-            this.InitializeComponent();
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += navigationHelper_LoadState;
-        }
+        public Project Project { get; set; }
 
         /// <summary>
         /// NavigationHelper is used on each page to aid in navigation and 
@@ -44,16 +37,17 @@ namespace Splity
             get { return this.navigationHelper; }
         }
 
-        /// <summary>
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
+
+        public EditProjectPage()
         {
-            get { return this.defaultViewModel; }
+            this.InitializeComponent();
+            this.navigationHelper = new NavigationHelper(this);
+            this.navigationHelper.LoadState += navigationHelper_LoadState;
+            this.navigationHelper.SaveState += navigationHelper_SaveState;
         }
 
         /// <summary>
-        /// Populates the page with content passed during navigation.  Any saved state is also
+        /// Populates the page with content passed during navigation. Any saved state is also
         /// provided when recreating a page from a prior session.
         /// </summary>
         /// <param name="sender">
@@ -62,23 +56,26 @@ namespace Splity
         /// <param name="e">Event data that provides both the navigation parameter passed to
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
-        /// session.  The state will be null the first time a page is visited.</param>
+        /// session. The state will be null the first time a page is visited.</param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            Project = (Project)e.NavigationParameter;
+            Title.Text = Project.Title;
+            Description.Text = Project.Description;
+            Priority.SelectedIndex = (int)Project.Priority - 1;
+            Status.SelectedIndex = (int)Project.Status - 1;
         }
 
         /// <summary>
-        /// Invoked when an item is clicked.
+        /// Preserves state associated with this page in case the application is suspended or the
+        /// page is discarded from the navigation cache.  Values must conform to the serialization
+        /// requirements of <see cref="SuspensionManager.SessionState"/>.
         /// </summary>
-        /// <param name="sender">The GridView (or ListView when the application is snapped)
-        /// displaying the item clicked.</param>
-        /// <param name="e">Event data that describes the item clicked.</param>
-        void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
+        /// <param name="e">Event data that provides an empty dictionary to be populated with
+        /// serializable state.</param>
+        private void navigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
-            // Navigate to the appropriate destination page, configuring the new page
-            // by passing required information as a navigation parameter
-            var id = ((Project)e.ClickedItem).Id;
-            this.Frame.Navigate(typeof(SplitPage), id);
         }
 
         #region NavigationHelper registration
@@ -106,16 +103,25 @@ namespace Splity
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-           var success = await SampleDataSource.Login(Email.Text, Password.Password);
+            Project.Deadline = Deadline.Date.DateTime;
+            Project.Description = Description.Text;
+            Project.Title = Title.Text;
+            Project.Priority = (Priority) Enum.Parse(typeof (Priority), Priority.SelectionBoxItem.ToString());
+            Project.Status = (Status) Enum.Parse(typeof (Status), Status.SelectionBoxItem.ToString());
 
-            if (success)
+            if (await ProjectSource.UpdateProjectAsync(Project))
             {
-                Frame.Navigate(typeof(ItemsPage));
+                Frame.Navigate(typeof(SplitPage), Project.Id);
             }
             else
             {
-                ErrorMessage.Text = "You are not the One.";
+                ErrorMessage.Text = "You tried to update with nonsense, which made me :(";
             }
+        }
+
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SplitPage), Project.Id);
         }
     }
 }

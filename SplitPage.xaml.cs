@@ -256,5 +256,15 @@ namespace Splity
         }
 
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(EditProjectPage), DefaultViewModel["Group"]);
+        }
+
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ItemsPage));
+        }
     }
 }

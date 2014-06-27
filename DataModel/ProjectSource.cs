@@ -45,7 +45,7 @@ namespace Splity.Data
 
         public static async Task<bool> UpdateProjectAsync(Project p)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "api/projects/"+p.Id)
+            var request = new HttpRequestMessage(HttpMethod.Put, "api/projects/" + p.Id)
             {
                 Content = new StringContent(JsonConvert.SerializeObject(p), Encoding.UTF8, "application/json")
             };

@@ -41,9 +41,9 @@ namespace Splity
             "Tumbling down the rabbit hole?",
             "Whoa. Déjà vu.",
             "Perhaps we are asking the wrong questions.",
-            "Tell me, Mr. Anderson, what good is a phone call when you are unable to speak?",
+            "What good is a phone call when you are unable to speak?",
             "You have a problem with authority, Mr. Anderson.",
-            "Electro-Magnetic Pulse, disables any electrical system within the blast radius, only weapon we have against the machines.",
+            "Electro-Magnetic Pulse -- only weapon we have against the machines.",
             "I've seen an agent punch through a concrete wall",
             "Remember... all I'm offering is the truth. Nothing more."
         };
