@@ -115,6 +115,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\CommentSource.cs" />
     <Compile Include="DataModel\CurrentClientSingleton.cs" />
     <Compile Include="DataModel\CurrentUserSingleton.cs" />
     <Compile Include="DataModel\ProjectSource.cs" />
