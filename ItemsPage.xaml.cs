@@ -29,7 +29,7 @@ namespace Splity
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        private Random _random = new Random();
+        private static readonly Random _random = new Random();
 
         private List<string>  _quotes = new List<string>
         {
