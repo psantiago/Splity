@@ -132,19 +132,6 @@ namespace Splity.Data
             return _sampleDataSource.Groups;
         }
 
-        public static async Task<IEnumerable<Project>> GetProjectsAsync()
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/projects");
-            var response = await _client.SendAsync(request);
-            var jsonString = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<Project[]>(jsonString);
-        }
-
-        public static async Task<Project> GetProjectsAsync(int id)
-        {
-            return await Task.Factory.StartNew(() => FakeData.GetSomeProjects().FirstOrDefault(i => i.Id == id));
-        }
-
         public static async Task<SampleDataGroup> GetGroupAsync(string uniqueId)
         {
             await _sampleDataSource.GetSampleDataAsync();

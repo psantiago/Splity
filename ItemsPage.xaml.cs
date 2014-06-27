@@ -89,7 +89,7 @@ namespace Splity
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
             //var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
             //this.DefaultViewModel["Items"] = sampleDataGroups;
-            var sampleProjects = await SampleDataSource.GetProjectsAsync();
+            var sampleProjects = await ProjectSource.GetProjectsAsync();
             this.DefaultViewModel["Items"] = sampleProjects;
         }
 

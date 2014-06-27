@@ -106,6 +106,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\ProjectSource.cs" />
+    <Compile Include="DataModel\TicketSource.cs" />
     <Compile Include="Domain\Comment.cs" />
     <Compile Include="Domain\Enums.cs" />
     <Compile Include="Domain\FakeData.cs" />
