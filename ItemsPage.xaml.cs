@@ -29,6 +29,25 @@ namespace Splity
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
+        private Random _random = new Random();
+
+        private List<string>  _quotes = new List<string>
+        {
+            "This is your last chance. After this, there is no turning back.",
+            "I'd like to share a revelation that I've had during my time here.",
+            "Have you ever had a dream, that you were so sure was real?",
+            "There is no spoon.",
+            "Never send a human to do a machine's job.",
+            "Tumbling down the rabbit hole?",
+            "Whoa. Déjà vu.",
+            "Perhaps we are asking the wrong questions.",
+            "Tell me, Mr. Anderson, what good is a phone call when you are unable to speak?",
+            "You have a problem with authority, Mr. Anderson.",
+            "Electro-Magnetic Pulse, disables any electrical system within the blast radius, only weapon we have against the machines.",
+            "I've seen an agent punch through a concrete wall",
+            "Remember... all I'm offering is the truth. Nothing more."
+        };
+
         /// <summary>
         /// NavigationHelper is used on each page to aid in navigation and 
         /// process lifetime management
@@ -49,6 +68,7 @@ namespace Splity
         public ItemsPage()
         {
             this.InitializeComponent();
+            this.pageTitle.Text = _quotes[_random.Next(0, _quotes.Count)];
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
         }
