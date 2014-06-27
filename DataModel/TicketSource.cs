@@ -16,18 +16,40 @@ namespace Splity.Data
     public sealed class TicketSource
     {
 
-        public static async Task<IEnumerable<Ticket>> GetTicketsAsync()
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/tickets");
-            HttpResponseMessage response = await CurrentClientSingleton.Client.SendAsync(request);
-            string jsonString = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<Ticket[]>(jsonString);
-        }
-
         public static async Task<Ticket> GetTicketsAsync(int id)
         {
-            //return await Task.Factory.StartNew(() => FakeData.GetSomeProjects().FirstOrDefault(i => i.Id == id));
-            return null;
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/tickets/" + id);
+            var response = await CurrentClientSingleton.Client.SendAsync(request);
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Ticket>(jsonString);
+        }
+
+        public static async Task<bool> AddTicketAsync(Ticket p)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/tickets")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(p), Encoding.UTF8, "application/json")
+            };
+            var response = await CurrentClientSingleton.Client.SendAsync(request);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> UpdateTicketAsync(Ticket p)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/tickets/" + p.Id)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(p), Encoding.UTF8, "application/json")
+            };
+            var response = await CurrentClientSingleton.Client.SendAsync(request);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task DeleteTicket(int id)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete, "api/tickets/" + id);
+            await CurrentClientSingleton.Client.SendAsync(request);
         }
     }
 }
