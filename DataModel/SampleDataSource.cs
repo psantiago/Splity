@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Storage;
@@ -14,6 +16,7 @@ using Windows.UI.Xaml.Media.Imaging;
 // replace it with something appropriate to their needs. If using this model, you might improve app 
 // responsiveness by initiating the data loading task in the code behind for App.xaml when the app 
 // is first launched.
+using Newtonsoft.Json;
 using Splity.Domain;
 
 namespace Splity.Data
@@ -99,7 +102,14 @@ namespace Splity.Data
 
         public static async Task<IEnumerable<Project>> GetProjectsAsync()
         {
-            return await Task.Factory.StartNew(() => FakeData.GetSomeProjects());
+            const string serviceUrl = "https://thematrixrevolutions.azurewebsites.net/";
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(serviceUrl);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", "bmVvQHRoZU1hdHJpeC5uZXQ6TmVv");
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/projects");
+            var response = await client.SendAsync(request);
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Project[]>(jsonString);
         }
 
         public static async Task<Project> GetProjectsAsync(int id)

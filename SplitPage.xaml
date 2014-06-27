@@ -138,7 +138,14 @@
                         <Run Text="{Binding Status}" />
                     </TextBlock>
                 </StackPanel>
-                <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" Text="{Binding Content}" Style="{StaticResource BodyTextBlockStyle}"/>
+                <ListView x:Name="listView1"  Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0">
+                    <!--<ListView.ItemTemplate>
+                        
+                    </ListView.ItemTemplate>-->
+                    <x:String>Item 1</x:String>
+                    <x:String>Item 2</x:String>
+                </ListView>
+                <!--<TextBlock Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" Text="{Binding Content}" Style="{StaticResource BodyTextBlockStyle}"/>-->
             </Grid>
         </ScrollViewer>
         <VisualStateManager.VisualStateGroups>
