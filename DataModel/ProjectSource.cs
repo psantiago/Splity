@@ -35,14 +35,14 @@ namespace Splity.Data
         public static async Task AddProjectAsync(Project p)
         {
             var jsonString = JsonConvert.SerializeObject(p);
-            var request = new HttpRequestMessage(HttpMethod.Post, "api/project");
-            await Client.SendAsync(request);
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/projects");
+            await CurrentClientSingleton.Client.SendAsync(request);
         }
 
         public static async Task DeleteProject(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Delete, "api/project/" + id);
-            await Client.SendAsync(request);
+            var request = new HttpRequestMessage(HttpMethod.Delete, "api/projects/" + id);
+            await CurrentClientSingleton.Client.SendAsync(request);
         }
     }
 }
