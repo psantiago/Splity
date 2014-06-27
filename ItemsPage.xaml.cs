@@ -129,5 +129,10 @@ namespace Splity
         }
 
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(AddProjectPage));
+        }
     }
 }

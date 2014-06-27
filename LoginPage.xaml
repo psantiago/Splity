@@ -13,7 +13,7 @@
             <TextBox Name="Email" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Margin="101,0,0,0" Width="180"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Password:" VerticalAlignment="Top" Margin="10,37,0,0"/>
             <TextBox Name="Password" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Margin="101,37,0,0" Width="180"/>
-            <Button Content="Jack Dehlin in" HorizontalAlignment="Left" Margin="98,104,0,0" VerticalAlignment="Top" Click="Button_Click" />
+            <Button Content="Jack Dehl-in" HorizontalAlignment="Left" Margin="98,104,0,0" VerticalAlignment="Top" Click="Button_Click" />
         </Grid>
         <TextBlock Name="ErrorMessage" HorizontalAlignment="Left" Margin="536,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="290" Foreground="#FFCD6464" FontSize="22"/>
     </Grid>

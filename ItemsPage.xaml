@@ -47,7 +47,7 @@
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
-            ItemClick="ItemView_ItemClick">
+            ItemClick="ItemView_ItemClick" Margin="0,0,465,0">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="250" Height="250">
@@ -78,5 +78,6 @@
             <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
+        <Button Content="Add New Project" HorizontalAlignment="Left" Margin="1019,155,0,0" Grid.Row="1" VerticalAlignment="Top" Height="219" Width="253" Click="Button_Click"/>
     </Grid>
 </Page>
