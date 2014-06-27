@@ -24,12 +24,20 @@ namespace Splity.Data
             return JsonConvert.DeserializeObject<Project[]>(jsonString);
         }
 
-        public static async Task<Project> GetProjectsAsync(int id)
+        public static async Task<Project> GetProjectAsync(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "api/projects/" + id);
             var response = await CurrentClientSingleton.Client.SendAsync(request);
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Project>(jsonString);
+        }
+
+        public static async Task<IEnumerable<Ticket>> GetProjectTixAsync(int id)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/projects/" + id + "/tickets");
+            var response = await CurrentClientSingleton.Client.SendAsync(request);
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Ticket[]>(jsonString);
         }
 
         public static async Task<bool> AddProjectAsync(Project p)
@@ -54,7 +62,7 @@ namespace Splity.Data
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task DeleteProject(int id)
+        public static async Task DeleteProjectAsync(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, "api/projects/" + id);
             await CurrentClientSingleton.Client.SendAsync(request);

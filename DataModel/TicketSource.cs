@@ -16,7 +16,7 @@ namespace Splity.Data
     public sealed class TicketSource
     {
 
-        public static async Task<Ticket> GetTicketsAsync(int id)
+        public static async Task<Ticket> GetTicketAsync(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "api/tickets/" + id);
             var response = await CurrentClientSingleton.Client.SendAsync(request);
@@ -46,7 +46,7 @@ namespace Splity.Data
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task DeleteTicket(int id)
+        public static async Task DeleteTicketAsync(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, "api/tickets/" + id);
             await CurrentClientSingleton.Client.SendAsync(request);
