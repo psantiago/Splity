@@ -86,11 +86,43 @@ namespace Splity.Data
     public sealed class SampleDataSource
     {
         private static SampleDataSource _sampleDataSource = new SampleDataSource();
+        private static User _currentUser;
+        private static HttpClient _client = new HttpClient();
+
+        static SampleDataSource()
+        {
+            _client.BaseAddress = new Uri("https://thematrixrevolutions.azurewebsites.net/");
+        }
 
         private ObservableCollection<SampleDataGroup> _groups = new ObservableCollection<SampleDataGroup>();
         public ObservableCollection<SampleDataGroup> Groups
         {
             get { return this._groups; }
+        }
+
+        public static async Task<bool> Login(string email, string password)
+        {
+            _currentUser = new User
+            {
+                Email = email,
+                Password = password
+            };
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _currentUser.BasicAuthString);
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/users");
+            var response = await _client.SendAsync(request);
+            var jsonString = await response.Content.ReadAsStringAsync();
+
+            if (!String.IsNullOrWhiteSpace(jsonString))
+            {
+                _currentUser = JsonConvert.DeserializeObject<User>(jsonString);
+                return true;
+            }
+            else
+            {
+                _client.DefaultRequestHeaders.Authorization = null;
+                return false;
+            }
         }
 
         public static async Task<IEnumerable<SampleDataGroup>> GetGroupsAsync()
@@ -102,12 +134,8 @@ namespace Splity.Data
 
         public static async Task<IEnumerable<Project>> GetProjectsAsync()
         {
-            const string serviceUrl = "https://thematrixrevolutions.azurewebsites.net/";
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(serviceUrl);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", "bmVvQHRoZU1hdHJpeC5uZXQ6TmVv");
             var request = new HttpRequestMessage(HttpMethod.Get, "api/projects");
-            var response = await client.SendAsync(request);
+            var response = await _client.SendAsync(request);
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Project[]>(jsonString);
         }
