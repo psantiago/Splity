@@ -89,7 +89,7 @@ namespace Splity
         /// session.  The state will be null the first time a page is visited.</param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var project = await SampleDataSource.GetProjectsAsync((int)e.NavigationParameter);
+            var project = await ProjectSource.GetProjectsAsync((int)e.NavigationParameter);
             this.DefaultViewModel["Group"] = project;
             this.DefaultViewModel["Items"] = project.Tickets;
 
