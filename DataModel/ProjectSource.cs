@@ -32,11 +32,15 @@ namespace Splity.Data
             return JsonConvert.DeserializeObject<Project>(jsonString);
         }
 
-        public static async Task AddProjectAsync(Project p)
+        public static async Task<bool> AddProjectAsync(Project p)
         {
-            var jsonString = JsonConvert.SerializeObject(p);
-            var request = new HttpRequestMessage(HttpMethod.Post, "api/projects");
-            await CurrentClientSingleton.Client.SendAsync(request);
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/projects")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(p), Encoding.UTF8, "application/json")
+            };
+            var response = await CurrentClientSingleton.Client.SendAsync(request);
+
+            return response.IsSuccessStatusCode;
         }
 
         public static async Task DeleteProject(int id)
